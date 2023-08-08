@@ -5,24 +5,24 @@ metadata:
 spec:
   flows:
     - route:
+        id: demo-route-0
+        group: demo-group-0
         from:
+          uri: "timer:exception"
           id: timer-exception-0
           parameters:
             period: '10000'
           steps:
-            - throwException:
-                disabled: false
-                exceptionType: java.lang.IllegalArgumentException
-                id: throw-exception-0
-                message: Force ERROR (IllegalArgumentException) every 10 seconds
-          uri: timer:exception
-        group: demo-group-0
-        id: demo-route-0
+            - setBody:
+                constant: "Hello Camel K from yaml"
+            - to:
+                uri: "log:info?showAll=true&multiline=true"
+                id: log-info-0
   traits:
     addons:
       telemetry:
-        auto: true
         enabled: true
+        endpoint: http://jaeger-collector:4317
     logging:
       enabled: true
       json: true
