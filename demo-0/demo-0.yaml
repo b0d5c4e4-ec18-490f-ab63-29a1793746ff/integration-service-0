@@ -1,0 +1,28 @@
+apiVersion: camel.apache.org/v1
+kind: Integration
+metadata:
+  name: demo-0
+spec:
+  flows:
+    - route:
+        from:
+          id: timer-exception-0
+          parameters:
+            period: '10000'
+          steps:
+            - throwException:
+                disabled: false
+                exceptionType: java.lang.IllegalArgumentException
+                id: throw-exception-0
+                message: Force ERROR (IllegalArgumentException) every 10 seconds
+          uri: timer:exception
+        group: demo-group-0
+        id: demo-route-0
+  traits:
+    addons:
+      telemetry:
+        auto: true
+        enabled: true
+    logging:
+      enabled: true
+      json: true
